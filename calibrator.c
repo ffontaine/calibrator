@@ -1,7 +1,8 @@
 
 /*
- * Calibrator v0.9e
- * by Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/Calibrator/
+ * Calibrator version fukien-alpha
+ * originally developed by stefan.manegold@cwi.nl, http://www.cwi.nl/~manegold/Calibrator/
+ * currently maintained by huangwentao@u.nus.edu, https://github.com/fukien/calibrator
  *
  * All rights reserved.
  * No warranties.
@@ -17,12 +18,14 @@
  *    and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by
- *	Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/.
+ *	This product includes software originally developed by
+ *	stefan.manegold@cwi.nl, http://www.cwi.nl/~manegold/ 
+ *	and currently maintained by
+ *	huangwentao@u.nus.edu, https://github.com/fukien/calibrator/
  * 4. Any publication of result obtained by use of this software must
  *    display a reference as follows:
- *	Results produced by Calibrator v0.9e
- *	(Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/)
+ *	Results produced by Calibrator (version: fukien-alpha)
+ *	(huangwentao@u.nus.edu, https://github.com/fukien/calibrator/)
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS `AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -46,7 +49,7 @@
 #include	<string.h>
 #include	<stdarg.h>
 
-#define VERSION "0.9e"
+#define VERSION "fukien-alpha"
 
 #define NUMLOADS 100000
 #define REDUCE	 10
@@ -128,10 +131,12 @@ void ErrXit(char *format, ...) {
 	exit(1);
 }
 
-lng round(dbl x)
-{
-	return (lng)(x + 0.5);
-}
+/**
+	lng round(dbl x)
+	{
+		return (lng)(x + 0.5);
+	}
+*/
 
 char last(char *s)
 {
@@ -317,8 +322,8 @@ lng** runCache(char *array, lng maxrange, lng minstride, lng MHz, FILE *fp, lng 
 	}
 	result[0][0] = (y << 24) | x;
 
-	fprintf(fp, "# Calibrator v%s\n", VERSION);
-	fprintf(fp, "# (by Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/)\n");
+	fprintf(fp, "# Calibrator version: %s\n", VERSION);
+	fprintf(fp, "# (by huangwentao@u.nus.edu, https://github.com/fukien/calibrator/)\n");
 
 	for (r = MINRANGE, y = 1; r <= maxrange; r *= 2) {
 		for (i = 3; i <= 5; i++) {
@@ -414,8 +419,8 @@ lng** runTLB(char *array, lng maxrange, lng minstride, lng shift, lng mincacheli
 	}
 	result[0][0] = (y << 24) | x;
 
-	fprintf(fp, "# Calibrator v%s\n", VERSION);
-	fprintf(fp, "# (by Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/)\n");
+	fprintf(fp, "# Calibrator version: %s\n", VERSION);
+	fprintf(fp, "# (by huangwentao@u.nus.edu, https://github.com/fukien/calibrator/)\n");
 
 	for (p = minspots, y = 2; p <= maxspots; p *= 2) {
 		for (i = 3; i <= 5; i++) {
@@ -836,8 +841,8 @@ void plotCache(cacheInfo *cache, lng **result, lng MHz, char *fn, FILE *fp, lng 
 	xh = (dbl)result[yy][0] / 1024.0;
 	yl = 1.0;
 	for (yh = 1000; yh < (lng)NSperIt(result[yy][1] - delay); yh *= 10);
-	fprintf(fp, "# Calibrator v%s\n", VERSION);
-	fprintf(fp, "# (by Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/)\n");
+	fprintf(fp, "# Calibrator version: %s\n", VERSION);
+	fprintf(fp, "# (by huangwentao@u.nus.edu, https://github.com/fukien/calibrator/)\n");
 	fprintf(fp, " set term postscript portrait enhanced\n");
 	fprintf(fp, " set output '%s.ps'\n", fn);
 	fprintf(fp, "#set term gif transparent interlace small size 500, 707 # xFFFFFF x333333 x333333 x0055FF x005522 x660000 xFF0000 x00FF00 x0000FF\n");
@@ -903,8 +908,8 @@ void plotCache(cacheInfo *cache, lng **result, lng MHz, char *fn, FILE *fp, lng 
 		fprintf(fp, "set label %ld '(%1.3g)  ' at %f,%f right\n", l + 1, z, xl, z);
 		fprintf(fp, "set arrow %ld from %f,%f to %f,%f nohead lt 0\n", l + 1, xl, z, xh, z);
 	}
-	fprintf(fp, " set label %ld '^{ Calibrator v%s (Stefan.Manegold\\@cwi.nl, www.cwi.nl/~manegold) }' at graph 0.5,graph 0.02 center\n", l + 1, VERSION);
-	fprintf(fp, "#set label %ld    'Calibrator v%s (Stefan.Manegold@cwi.nl, www.cwi.nl/~manegold)'    at graph 0.5,graph 0.03 center\n",  l + 1, VERSION);
+	fprintf(fp, " set label %ld '^{ Calibrator version: %s (huangwentao\\@u.nus.edu, https://github.com/fukien) }' at graph 0.5,graph 0.02 center\n", l + 1, VERSION);
+	fprintf(fp, "#set label %ld    'Calibrator version: %s (huangwentao\\@u.nus.edu, https://github.com/fukien)'    at graph 0.5,graph 0.03 center\n",  l + 1, VERSION);
 	fprintf(fp, "plot \\\n0.1 title 'stride:' with points pt 0 ps 0");
 	for (x = 1, l = cache->levels; x <= xx; x++) {
 		fprintf(fp, " , \\\n'%s.data' using 1:($%ld-%f) title '", fn, (6 * x) + 1, NSperIt(delay));
@@ -932,8 +937,8 @@ void plotTLB(TLBinfo *TLB, lng **result, lng MHz, char *fn, FILE *fp, lng delay)
 	xh = (dbl)result[yy][0];
 	yl = 1.0;
 	for (yh = 1000; yh < (lng)NSperIt(result[yy][2] - delay); yh *= 10);
-	fprintf(fp, "# Calibrator v%s\n", VERSION);
-	fprintf(fp, "# (by Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/)\n");
+	fprintf(fp, "# Calibrator version: %s\n", VERSION);
+	fprintf(fp, "# (by huangwentao@u.nus.edu, https://github.com/fukien/calibrator/)\n");
 	fprintf(fp, " set term postscript portrait enhanced\n");
 	fprintf(fp, " set output '%s.ps'\n", fn);
 	fprintf(fp, "#set term gif transparent interlace small size 500, 707 # xFFFFFF x333333 x333333 x0055FF x005522 x660000 xFF0000 x00FF00 x0000FF\n");
@@ -999,8 +1004,8 @@ void plotTLB(TLBinfo *TLB, lng **result, lng MHz, char *fn, FILE *fp, lng delay)
 		fprintf(fp, "set label %ld '(%1.3g)  ' at %f,%f right\n", l + 1, z, xl, z);
 		fprintf(fp, "set arrow %ld from %f,%f to %f,%f nohead lt 0\n", l + 1, xl, z, xh, z);
 	}
-	fprintf(fp, " set label %ld '^{ Calibrator v%s (Stefan.Manegold\\@cwi.nl, www.cwi.nl/~manegold) }' at graph 0.5,graph 0.02 center\n", l + 1, VERSION);
-        fprintf(fp, "#set label %ld    'Calibrator v%s (Stefan.Manegold@cwi.nl, www.cwi.nl/~manegold)'    at graph 0.5,graph 0.03 center\n",  l + 1, VERSION);
+	fprintf(fp, " set label %ld '^{ Calibrator version: %s (huangwentao\\@u.nus.edu, https://github.com/fukien/calibrator/) }' at graph 0.5,graph 0.02 center\n", l + 1, VERSION);
+        fprintf(fp, "#set label %ld    'Calibrator version: %s (huangwentao@u.nus.edu, https://github.com/fukien/calibrator/)'    at graph 0.5,graph 0.03 center\n",  l + 1, VERSION);
 	fprintf(fp, "plot \\\n0.1 title 'stride:' with points pt 0 ps 0");
 	for (x = 2, l = TLB->levels; x <= xx; x++) {
 		fprintf(fp, " , \\\n'%s.data' using 1:($%ld-%f) title '", fn, (6 * (x - 1)) + 1, NSperIt(delay));
@@ -1105,7 +1110,7 @@ int main(int ac, char **av)
 	TLBinfo	*TLB;
 	lng	align = 0, pgsz  = getpagesize();
 
-	fprintf(stdout,"\nCalibrator v%s\n(by Stefan.Manegold@cwi.nl, http://www.cwi.nl/~manegold/)\n", VERSION);
+	fprintf(stdout,"\nCalibrator, version: %s\n (currently maintained by huangwentao@u.nus.edu, https://github.com/fukien)\n", VERSION);
 
 	if (ac < 4) ErrXit("usage: '%s <MHz> <size>[k|M|G] <filename>`", av[0]);
 
@@ -1236,6 +1241,5 @@ int main(int ac, char **av)
 	free(TLB);
 	TLB = 0;
 
-	return(0);
+	return 0;
 }
-

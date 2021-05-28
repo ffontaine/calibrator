@@ -6,13 +6,26 @@ Linux kernel version >= 4.11.0
 CMake version >= 3.5.2
 
 ## Usage
+### Build
 ```
 mkdir build
-cd build
+cd build/
 cmake ..
 make
-cd ../bin
-./calibrator
+cd ../
+```
+###
+```
+cd bin/
+./calibrator [MHz] [size] [filename], e.g., ./calibrator 1900 10G stdout
+
+	[MHz] 
+		gives the CPU's clock speed in Mega Hertz (MHz).
+	[size] 
+		gives the amount of memory to be used. [size] should be smaller than the total amount of main memory, but it should be significantly bigger than the maximum cache size expected. 
+		[size] is interpreted as bytes; suffixes "k" ("kilo" = 1024), "M" ("Mega" = 10242), and "G" ("Giga" = 10243) may be used.
+	[filename] 
+		gives the filename for the result files.
 ```
 
 ## Contact
