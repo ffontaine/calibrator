@@ -4,7 +4,7 @@ project(calibrator)
 
 set(BIN_PATH "bin")
 
-# cmake -DCMAKE_BUILD_TYPE=Debug
+# set(CMAKE_DEBUG_POSTFIX d)
 
 add_executable(calibrator calibrator.c)
 target_link_libraries(calibrator -lm)
